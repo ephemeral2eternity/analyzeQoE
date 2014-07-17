@@ -1,0 +1,15 @@
+%% Compute Traffic out of server by msg sent out data
+% Chen Wang
+% computeTraffic.m
+
+function trafficSent = computeTraffic(msgData)
+    t = 1;
+    msgNum = size(msgData,1);
+
+    for i = 1 : msgNum
+        ts = msgData(:, 1);
+        msgSz = msgData(:, 2);
+    end
+
+
+end
