@@ -8,9 +8,9 @@ clc;
 clear all;
 close all;
 
-non_cooperation_dir = './exp512/nonCoopSce2/';
-cooperation_dir = './exp512/coopSce2/';
-non_cooperate_client_files = dir([non_cooperation_dir 'Client*']);
+non_cooperation_dir = '~/chenw/matlab/simgrid_data/exp512/nonCoopSce3/';
+cooperation_dir = '~/chenw/matlab/simgrid_data/exp512/coopSce3/';
+non_cooperate_client_files = dir([non_cooperation_dir 'Client*_rst.csv']);
 non_cooperate_server_files = dir([non_cooperation_dir 'Server*']);
 cooperate_client_files = dir([cooperation_dir 'Client*']);
 cooperate_server_files = dir([cooperation_dir 'Server*']);
@@ -18,6 +18,8 @@ cooperate_server_files = dir([cooperation_dir 'Server*']);
 
 numClients = size(non_cooperate_client_files, 1);
 numServers = size(non_cooperate_server_files, 1);
+
+numClients
 
 % Load noCooperation QoE data
 non_cooperation_qoe_mat = [];
@@ -69,7 +71,7 @@ ylabel({'Percentage of users whose average QoE'; 'is below the value'}, 'FontSiz
 xlabel('Average QoE of a video session', 'FontSize',14);
 title('CDF of average QoEs', 'FontSize',16);
 hold off;
-print(h1, '-dpng', './rstImgs/cdfComparison.png');
+print(h1, '-dpng', './rstImgs/cdfComparison-Sce3.png');
 
 h2 = figure(2), hold on;
 plot(min_non_cooperation_qoe, '-b', 'LineWidth', 2);
@@ -80,7 +82,7 @@ ylabel({'QoE'}, 'FontSize',14);
 xlabel('Time', 'FontSize',14);
 title('The worst client behavior', 'FontSize',16);
 hold off;
-print(h2, '-dpng', './rstImgs/bestComparison.png');
+print(h2, '-dpng', './rstImgs/worstComparison-Sce3.png');
 
 h3 = figure(3), hold on;
 plot(max_non_cooperation_qoe, '-b', 'LineWidth', 2);
@@ -91,4 +93,4 @@ ylabel({'QoE'}, 'FontSize',14);
 xlabel('Time', 'FontSize',14);
 title('The best client behavior', 'FontSize',16);
 hold off;
-print(h3, '-dpng', './rstImgs/worstComparison.png');
+print(h3, '-dpng', './rstImgs/bestComparison-Sce3.png');
