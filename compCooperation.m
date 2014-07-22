@@ -8,7 +8,7 @@ clc;
 clear all;
 close all;
 
-scenario = 'Sce0';
+scenario = 'Sce3';
 dataDir = '~/weiyun/code/ist_repo/simgrid_data/rsts/';
 
 disp(['Data Folder: ' dataDir]);

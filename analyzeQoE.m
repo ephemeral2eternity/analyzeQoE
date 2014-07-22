@@ -11,7 +11,7 @@ nBin = 100;
 
 scenario = 'Sce0';
 
-dataDir = '~/weiyun/code/ist_repo/simgrid_data/exp512/';
+dataDir = '~/weiyun/code/ist_repo/simgrid_data/rsts/';
 non_cooperation_dir = strcat(dataDir, 'nonCoop', scenario, '/');
 cooperation_dir = strcat(dataDir, 'coop', scenario, '/');
 non_cooperate_server_files = dir([non_cooperation_dir 'Server*qoe.csv']);
