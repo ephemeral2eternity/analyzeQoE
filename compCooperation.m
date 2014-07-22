@@ -9,7 +9,7 @@ clear all;
 close all;
 
 scenario = 'Sce0';
-dataDir = '~/chenw/matlab/simgrid_data/exp512/'
+dataDir = '~/chenw/matlab/simgrid_data/data/'
 non_cooperation_dir = strcat(dataDir, 'nonCoop', scenario, '/');
 cooperation_dir = strcat(dataDir, 'coop', scenario, '/');
 non_cooperate_client_files = dir([non_cooperation_dir 'Client*_rst.csv']);

@@ -9,8 +9,10 @@ clear all;
 close all;
 nBin = 100;
 
-non_cooperation_dir = './exp512/nonCoopSce2/';
-cooperation_dir = './exp512/coopSce2/';
+scenario = 'Sce0'
+dataDir = '~/chenw/matlab/simgrid_data/data/'
+non_cooperation_dir = strcat(dataDir, 'nonCoop', scenario, '/');
+cooperation_dir = strcat(dataDir, 'coop', scenario, '/');
 non_cooperate_server_files = dir([non_cooperation_dir 'Server*traffic.csv']);
 cooperate_server_files = dir([cooperation_dir 'Server*traffic.csv']);
 
@@ -37,7 +39,7 @@ for i = 1 : numServers
 end
 legend(legendStrs);
 hold off;
-print(h1, '-dpng', './rstImgs/sLoads_nonCoop_sce2.png');
+print(h1, '-dpng', ['./rstImgs/sLoads_nonCoop_' scenario '.png']);
 
 legendStrs = {};
 mn_load_coop = [];
@@ -59,7 +61,7 @@ for i = 1 : numServers
 end
 legend(legendStrs);
 hold off;
-print(h2, '-dpng', './rstImgs/sLoads_coop_sce2.png');
+print(h2, '-dpng', ['./rstImgs/sLoads_coop_' scenario '.png']);
 
 mn_load_mat = [mn_load_non_coop mn_load_coop];
 h3 = figure(3);
@@ -67,4 +69,4 @@ hold on;
 bar(mn_load_mat);
 legend('Non Cooperation', 'Cooperation');
 hold off;
-print(h3, '-dpng', './rstImgs/serverLoad_bars_sce2.png');
+print(h3, '-dpng', ['./rstImgs/serverLoad_bars_' scenario '.png']);
