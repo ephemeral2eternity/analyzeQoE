@@ -11,7 +11,7 @@ nBin = 100;
 
 scenario = 'Sce0';
 
-dataDir = '~/weiyun/code/ist_repo/simgrid_data/rsts/';
+dataDir = '~/weiyun/code/ist_repo/data/data_expD/';
 non_qoe_dir = strcat(dataDir, 'nonQoE', scenario, '/');
 non_cooperation_dir = strcat(dataDir, 'nonCoop', scenario, '/');
 cooperation_dir = strcat(dataDir, 'coop', scenario, '/');

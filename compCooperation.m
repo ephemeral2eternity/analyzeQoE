@@ -8,8 +8,8 @@ clc;
 clear all;
 close all;
 
-scenario = 'Sce3';
-dataDir = '~/weiyun/code/ist_repo/simgrid_data/rsts/';
+scenario = 'Sce1';
+dataDir = '~/weiyun/code/ist_repo/data/data_expFinal/';
 
 disp(['Data Folder: ' dataDir]);
 disp(['Scenario: ' scenario]);
@@ -17,17 +17,18 @@ disp(['Scenario: ' scenario]);
 non_qoe_dir = strcat(dataDir, 'nonQoE', scenario, '/');
 non_cooperation_dir = strcat(dataDir, 'nonCoop', scenario, '/');
 cooperation_dir = strcat(dataDir, 'coop', scenario, '/');
-client_files = dir([non_qoe_dir 'Client*_rst.csv']);
-
-numClients = size(client_files, 1);
+non_qoe_client_files = dir([non_qoe_dir 'Client*_rst.csv']);
+non_coop_client_files = dir([non_cooperation_dir 'Client*_rst.csv']);
+coop_client_files = dir([cooperation_dir 'Client*_rst.csv']);
 
 % Load nonQoE QoE data for clients
+non_qoe_clients_num = size(non_qoe_client_files, 1);
 non_qoe_mat = [];
-non_qoe_mean = zeros(numClients, 1);
-non_qoe_std = zeros(numClients, 1);
+non_qoe_mean = zeros(non_qoe_clients_num, 1);
+non_qoe_std = zeros(non_qoe_clients_num, 1);
 
-for i = 1 : numClients
-   dat = csvimport([non_qoe_dir client_files(i).name], 'noHeader', true);
+for i = 1 : non_qoe_clients_num
+   dat = csvimport([non_qoe_dir non_qoe_client_files(i).name], 'noHeader', true);
    curQoE = cell2mat(dat(:, 4));
    non_qoe_mat = [non_qoe_mat; curQoE'];
    non_qoe_mean(i) = mean(curQoE);
@@ -37,15 +38,18 @@ end
 min_non_qoe = non_qoe_mat(minInd, :);
 [~, maxInd] = max(non_qoe_mean);
 max_non_qoe = non_qoe_mat(maxInd, :);
+sort_non_qoe = sort(non_qoe_mean);
 
 % Load noCooperation QoE data
+non_coopClients_num = size(non_coop_client_files, 1);
 non_cooperation_qoe_mat = [];
-non_cooperation_qoe_mean = zeros(numClients, 1);
-non_cooperation_qoe_std = zeros(numClients, 1);
+non_cooperation_qoe_mean = zeros(non_coopClients_num, 1);
+non_cooperation_qoe_std = zeros(non_coopClients_num, 1);
 
-for i = 1 : numClients
-   dat = csvimport([non_cooperation_dir client_files(i).name], 'noHeader', true);
+for i = 1 : non_coopClients_num
+   dat = csvimport([non_cooperation_dir non_coop_client_files(i).name], 'noHeader', true);
    curQoE = cell2mat(dat(:, 4));
+   % disp(i);
    non_cooperation_qoe_mat = [non_cooperation_qoe_mat; curQoE'];
    non_cooperation_qoe_mean(i) = mean(curQoE);
    non_cooperation_qoe_std(i) = std(curQoE);
@@ -55,15 +59,17 @@ end
 min_non_cooperation_qoe = non_cooperation_qoe_mat(minInd, :);
 [~, maxInd] = max(non_cooperation_qoe_mean);
 max_non_cooperation_qoe = non_cooperation_qoe_mat(maxInd, :);
+sort_non_coop = sort(non_cooperation_qoe_mean);
 
 
 % Load cooperation QoE data
+coop_clients_num = size(coop_client_files, 1);
 cooperation_qoe_mat = [];
-cooperation_qoe_mean = zeros(numClients, 1);
-cooperation_qoe_std = zeros(numClients, 1);
+cooperation_qoe_mean = zeros(coop_clients_num, 1);
+cooperation_qoe_std = zeros(coop_clients_num, 1);
 
-for i = 1 : numClients
-   dat = csvimport([cooperation_dir client_files(i).name], 'noHeader', true);
+for i = 1 : coop_clients_num
+   dat = csvimport([cooperation_dir coop_client_files(i).name], 'noHeader', true);
    curQoE = cell2mat(dat(:, 4));
    cooperation_qoe_mat = [cooperation_qoe_mat; curQoE'];
    cooperation_qoe_mean(i) = mean(curQoE);
@@ -74,47 +80,71 @@ end
 min_cooperation_qoe = cooperation_qoe_mat(minInd, :);
 [~, maxInd] = max(cooperation_qoe_mean);
 max_cooperation_qoe = cooperation_qoe_mat(maxInd, :);
+sort_coop = sort(cooperation_qoe_mean);
 
 
 clr = jet(2);
 h1 = figure(1);
 hold on;
 h_non_qoe = cdfplot(non_qoe_mean);
-set(h_non_qoe,'LineStyle', '-', 'Color', 'b', 'LineWidth',2)
+set(h_non_qoe,'LineStyle', '-', 'Color', 'b', 'LineWidth',4)
 h_non_cooperate = cdfplot(non_cooperation_qoe_mean);
-set(h_non_cooperate,'LineStyle', '--', 'Color', 'r', 'LineWidth',2)
+set(h_non_cooperate,'LineStyle', '--', 'Color', 'r', 'LineWidth',4)
 h_cooperate = cdfplot(cooperation_qoe_mean);
-set(h_cooperate,'LineStyle', ':', 'Color', 'g', 'LineWidth',2)
-lg = legend('Non-QoE', 'Non-Cooperation', 'Cooperation', 2);
-set(lg,'FontSize',14);
-ylabel({'Percentage of users whose average QoE'; 'is below the value'}, 'FontSize',14);
-xlabel('Average QoE of a video session', 'FontSize',14);
-title('CDF of average QoEs', 'FontSize',16);
+set(h_cooperate,'LineStyle', ':', 'Color', 'g', 'LineWidth',4)
+plot([0:0.01:5], 0.1, '-k');
+lg = legend('Static', 'QoE Driven', 'Cooperation', 4);
+set(lg,'FontSize',20);
+ylabel('Percentile of users', 'FontSize',20);
+xlabel('Individual User QoE for a video session', 'FontSize',20);
+title('CDF of average QoEs', 'FontSize',20);
+axis([2 5 0 1]);
+% Create textarrow for non_qoe_mean 90 percentile
+annotation(h1,'textarrow',[0.3 0.2],...
+    [0.3 0.2], 'TextEdgeColor','none',...
+    'String',{'90% QoE:', num2str(sort_non_qoe(51))}, ...
+    'FontSize',20);
+
+annotation(h1,'textarrow',[0.4 0.3],...
+    [0.4 0.3], 'TextEdgeColor','none',...
+    'String',{'90% QoE:', num2str(sort_non_coop(51))}, ...
+    'FontSize',20);
+
+annotation(h1,'textarrow',[0.5 0.4],...
+    [0.5 0.4], 'TextEdgeColor','none',...
+    'String',{'90% QoE:', num2str(sort_coop(51))}, ...
+    'FontSize',20);
+
+set(gca, 'FontSize', 20);
 hold off;
 print(h1, '-dpng', ['./rstImgs/cdfComparison-' scenario '.png']);
 
 h2 = figure(2);
 hold on;
-plot(min_non_qoe, '-b', 'LineWidth', 2);
-plot(min_non_cooperation_qoe, '--r', 'LineWidth', 2);
-plot(min_cooperation_qoe, ':g', 'LineWidth', 2);
-lg = legend('Non-QoE', 'Non-Cooperation', 'Cooperation');
-set(lg,'FontSize',14);
-ylabel({'QoE'}, 'FontSize',14);
-xlabel('Time', 'FontSize',14);
-title('The worst client behavior', 'FontSize',16);
+plot(min_non_qoe, '-b', 'LineWidth', 4);
+plot(min_non_cooperation_qoe, '--r', 'LineWidth', 4);
+plot(min_cooperation_qoe, ':g', 'LineWidth', 4);
+lg = legend('Static', 'QoE Driven', 'Cooperation', 4);
+set(lg,'FontSize',20);
+ylabel({'QoE'}, 'FontSize',20);
+xlabel('Time', 'FontSize',20);
+title('The worst client behavior', 'FontSize',20);
+set(gca, 'FontSize', 20);
+axis([0 80 0 6]);
 hold off;
 print(h2, '-dpng', ['./rstImgs/worstComparison-' scenario '.png']);
 
 h3 = figure(3);
 hold on;
-plot(max_non_qoe, '-b', 'LineWidth', 2);
-plot(max_non_cooperation_qoe, '--r', 'LineWidth', 2);
-plot(max_cooperation_qoe, ':g', 'LineWidth', 2);
-lg = legend('Non-QoE', 'Non-Cooperation', 'Cooperation', 4);
-set(lg,'FontSize',14);
-ylabel({'QoE'}, 'FontSize',14);
-xlabel('Time', 'FontSize',14);
-title('The best client behavior', 'FontSize',16);
+plot(max_non_qoe, '-b', 'LineWidth', 4);
+plot(max_non_cooperation_qoe, '--r', 'LineWidth', 4);
+plot(max_cooperation_qoe, ':g', 'LineWidth', 4);
+lg = legend('Static', 'QoE Driven', 'Cooperation', 4);
+set(lg,'FontSize',20);
+axis([0 80 2 6]);
+ylabel({'QoE'}, 'FontSize',20);
+xlabel('Time', 'FontSize',20);
+title('The best client behavior', 'FontSize',20);
+set(gca, 'FontSize', 20);
 hold off;
 print(h3, '-dpng', ['./rstImgs/bestComparison-' scenario '.png']);
