@@ -8,15 +8,16 @@ clc;
 clear all;
 close all;
 
-scenario = 'Sce1';
-dataDir = '~/weiyun/code/ist_repo/data/data_expFinal/';
+scenario = 'Sce0';
+expNo = 'expRd0';
+dataDir = '~/chenw/matlab/data/data_expRd0/';
 
 disp(['Data Folder: ' dataDir]);
 disp(['Scenario: ' scenario]);
 
-non_qoe_dir = strcat(dataDir, 'nonQoE', scenario, '/');
-non_cooperation_dir = strcat(dataDir, 'nonCoop', scenario, '/');
-cooperation_dir = strcat(dataDir, 'coop', scenario, '/');
+non_qoe_dir = strcat(dataDir, scenario, '/nonQoE', '/');
+non_cooperation_dir = strcat(dataDir, scenario, '/nonCoop', '/');
+cooperation_dir = strcat(dataDir, scenario, '/coop', '/');
 non_qoe_client_files = dir([non_qoe_dir 'Client*_rst.csv']);
 non_coop_client_files = dir([non_cooperation_dir 'Client*_rst.csv']);
 coop_client_files = dir([cooperation_dir 'Client*_rst.csv']);
@@ -93,31 +94,31 @@ set(h_non_cooperate,'LineStyle', '--', 'Color', 'r', 'LineWidth',4)
 h_cooperate = cdfplot(cooperation_qoe_mean);
 set(h_cooperate,'LineStyle', ':', 'Color', 'g', 'LineWidth',4)
 plot([0:0.01:5], 0.1, '-k');
-lg = legend('Static', 'QoE Driven', 'Cooperation', 4);
+lg = legend('Static', 'QoE Driven', 'Cooperation', 2);
 set(lg,'FontSize',20);
 ylabel('Percentile of users', 'FontSize',20);
 xlabel('Individual User QoE for a video session', 'FontSize',20);
 title('CDF of average QoEs', 'FontSize',20);
 axis([2 5 0 1]);
-% Create textarrow for non_qoe_mean 90 percentile
-annotation(h1,'textarrow',[0.3 0.2],...
-    [0.3 0.2], 'TextEdgeColor','none',...
-    'String',{'90% QoE:', num2str(sort_non_qoe(51))}, ...
-    'FontSize',20);
-
-annotation(h1,'textarrow',[0.4 0.3],...
-    [0.4 0.3], 'TextEdgeColor','none',...
-    'String',{'90% QoE:', num2str(sort_non_coop(51))}, ...
-    'FontSize',20);
-
-annotation(h1,'textarrow',[0.5 0.4],...
-    [0.5 0.4], 'TextEdgeColor','none',...
-    'String',{'90% QoE:', num2str(sort_coop(51))}, ...
-    'FontSize',20);
+% % Create textarrow for non_qoe_mean 90 percentile
+% annotation(h1,'textarrow',[0.3 0.2],...
+%     [0.3 0.2], 'TextEdgeColor','none',...
+%     'String',{'90% QoE:', num2str(sort_non_qoe(51))}, ...
+%     'FontSize',20);
+% 
+% annotation(h1,'textarrow',[0.4 0.3],...
+%     [0.4 0.3], 'TextEdgeColor','none',...
+%     'String',{'90% QoE:', num2str(sort_non_coop(51))}, ...
+%     'FontSize',20);
+% 
+% annotation(h1,'textarrow',[0.5 0.4],...
+%     [0.5 0.4], 'TextEdgeColor','none',...
+%     'String',{'90% QoE:', num2str(sort_coop(51))}, ...
+%     'FontSize',20);
 
 set(gca, 'FontSize', 20);
 hold off;
-print(h1, '-dpng', ['./rstImgs/cdfComparison-' scenario '.png']);
+print(h1, '-depsc2', ['./rstImgs/cdfComparison-' scenario '-' expNo '.eps']);
 
 h2 = figure(2);
 hold on;
@@ -132,7 +133,7 @@ title('The worst client behavior', 'FontSize',20);
 set(gca, 'FontSize', 20);
 axis([0 80 0 6]);
 hold off;
-print(h2, '-dpng', ['./rstImgs/worstComparison-' scenario '.png']);
+print(h2, '-depsc2', ['./rstImgs/worstComparison-' scenario '-' expNo '.eps']);
 
 h3 = figure(3);
 hold on;
@@ -147,4 +148,4 @@ xlabel('Time', 'FontSize',20);
 title('The best client behavior', 'FontSize',20);
 set(gca, 'FontSize', 20);
 hold off;
-print(h3, '-dpng', ['./rstImgs/bestComparison-' scenario '.png']);
+print(h3, '-depsc2', ['./rstImgs/bestComparison-' scenario '-' expNo '.eps']);
