@@ -8,16 +8,16 @@ clc;
 clear all;
 close all;
 
-scenario = 'Sce0';
-expNo = 'expRd0';
-dataDir = '~/chenw/matlab/data/data_expRd0/';
+scenario = 'Sce8';
+expNo = 'expRd2';
+dataDir = '../data/data_expRd2/';
 
 disp(['Data Folder: ' dataDir]);
 disp(['Scenario: ' scenario]);
 
-non_qoe_dir = strcat(dataDir, scenario, '/nonQoE', '/');
-non_cooperation_dir = strcat(dataDir, scenario, '/nonCoop', '/');
-cooperation_dir = strcat(dataDir, scenario, '/coop', '/');
+non_qoe_dir = strcat(dataDir, scenario, '/nonQoE/');
+non_cooperation_dir = strcat(dataDir, scenario, '/nonCoop/');
+cooperation_dir = strcat(dataDir, scenario, '/coop/');
 non_qoe_client_files = dir([non_qoe_dir 'Client*_rst.csv']);
 non_coop_client_files = dir([non_cooperation_dir 'Client*_rst.csv']);
 coop_client_files = dir([cooperation_dir 'Client*_rst.csv']);
@@ -119,6 +119,7 @@ axis([2 5 0 1]);
 set(gca, 'FontSize', 20);
 hold off;
 print(h1, '-depsc2', ['./rstImgs/cdfComparison-' scenario '-' expNo '.eps']);
+print(h1, '-dpng', ['./rstImgs/cdfComparison-' scenario '-' expNo '.png']);
 
 h2 = figure(2);
 hold on;
@@ -134,6 +135,7 @@ set(gca, 'FontSize', 20);
 axis([0 80 0 6]);
 hold off;
 print(h2, '-depsc2', ['./rstImgs/worstComparison-' scenario '-' expNo '.eps']);
+print(h2, '-dpng', ['./rstImgs/worstComparison-' scenario '-' expNo '.png']);
 
 h3 = figure(3);
 hold on;
@@ -149,3 +151,4 @@ title('The best client behavior', 'FontSize',20);
 set(gca, 'FontSize', 20);
 hold off;
 print(h3, '-depsc2', ['./rstImgs/bestComparison-' scenario '-' expNo '.eps']);
+print(h3, '-dpng', ['./rstImgs/bestComparison-' scenario '-' expNo '.png']);

@@ -9,7 +9,7 @@ clear all;
 close all;
 nBin = 100;
 
-scenario = 'Sce6';
+scenario = 'Sce5';
 
 dataDir = '../data/data_expRd2/';
 non_qoe_dir = strcat(dataDir, scenario, '/nonQoE/');
@@ -114,7 +114,7 @@ barwitherr(mn_load_mat, std_load_mat);
 legend('Non QoE Driven', 'Non Cooperation', 'Cooperation');
 set(gca, 'XTick', 1:length(serverNames), 'XTickLabel', serverNames, 'FontSize',16);
 ylabel('Traffic load (mean, std) on all servers (Mbps)', 'FontSize',16);
-axis([0, 4, 0, 30000000]);
+axis([0, 3, 0, ])
 title('Average server load', 'FontSize',16);
 hold off;
 print(h4, '-dpng', ['./rstImgs/serverLoad_bars' scenario '.png']);
