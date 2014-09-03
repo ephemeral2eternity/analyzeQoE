@@ -8,7 +8,7 @@ clc;
 clear all;
 close all;
 
-scenario = 'Sce8';
+scenario = 'Sce4';
 expNo = 'expRd2';
 dataDir = '../data/data_expRd2/';
 
@@ -93,33 +93,40 @@ h_non_cooperate = cdfplot(non_cooperation_qoe_mean);
 set(h_non_cooperate,'LineStyle', '--', 'Color', 'r', 'LineWidth',4)
 h_cooperate = cdfplot(cooperation_qoe_mean);
 set(h_cooperate,'LineStyle', ':', 'Color', 'g', 'LineWidth',4)
-plot([0:0.01:5], 0.1, '-k');
+plot([0:0.01:5], 0.2, '-k');
 lg = legend('Static', 'QoE Driven', 'Cooperation', 2);
 set(lg,'FontSize',20);
 ylabel('Percentile of users', 'FontSize',20);
 xlabel('Individual User QoE for a video session', 'FontSize',20);
 title('CDF of average QoEs', 'FontSize',20);
 axis([2 5 0 1]);
-% % Create textarrow for non_qoe_mean 90 percentile
-% annotation(h1,'textarrow',[0.3 0.2],...
-%     [0.3 0.2], 'TextEdgeColor','none',...
-%     'String',{'90% QoE:', num2str(sort_non_qoe(51))}, ...
-%     'FontSize',20);
-% 
-% annotation(h1,'textarrow',[0.4 0.3],...
-%     [0.4 0.3], 'TextEdgeColor','none',...
-%     'String',{'90% QoE:', num2str(sort_non_coop(51))}, ...
-%     'FontSize',20);
-% 
-% annotation(h1,'textarrow',[0.5 0.4],...
-%     [0.5 0.4], 'TextEdgeColor','none',...
-%     'String',{'90% QoE:', num2str(sort_coop(51))}, ...
-%     'FontSize',20);
+
+ind90 = round(length(sort_non_qoe) * 0.1);
+ind80 = round(length(sort_non_qoe) * 0.2);
+% Create textarrow for non_qoe_mean 90 percentile
+annotation(h1,'textarrow',[0.3 0.2],...
+    [0.3 0.2], 'TextEdgeColor','none',...
+    'String',{'80% QoE:', num2str(sort_non_qoe(ind80))}, ...
+    'FontSize',20);
+
+annotation(h1,'textarrow',[0.4 0.3],...
+    [0.4 0.3], 'TextEdgeColor','none',...
+    'String',{'80% QoE:', num2str(sort_non_coop(ind80))}, ...
+    'FontSize',20);
+
+annotation(h1,'textarrow',[0.5 0.4],...
+    [0.5 0.4], 'TextEdgeColor','none',...
+    'String',{'80% QoE:', num2str(sort_coop(ind80))}, ...
+    'FontSize',20);
 
 set(gca, 'FontSize', 20);
 hold off;
 print(h1, '-depsc2', ['./rstImgs/cdfComparison-' scenario '-' expNo '.eps']);
 print(h1, '-dpng', ['./rstImgs/cdfComparison-' scenario '-' expNo '.png']);
+
+disp(['80% percentile nonQoE: ' num2str(sort_non_qoe(ind80))]);
+disp(['80% percentile nonCoop: ' num2str(sort_non_coop(ind80))]);
+disp(['80% percentile nonCoop: ' num2str(sort_coop(ind80))]);
 
 h2 = figure(2);
 hold on;
